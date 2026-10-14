@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int arr[5] = {10, 20, 30, 50, 40};
+    int maxVal = 0;
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (arr[i] > maxVal)
+        {
+            maxVal = arr[i];
+        }
+    }
+    cout << "Nilai terbesar: " << maxVal << endl;
+}
