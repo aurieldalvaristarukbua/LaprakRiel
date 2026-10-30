@@ -5,16 +5,7 @@ using namespace std;
 
 int main()
 {
-    /*Buat program yang menerima input nilai beberapa mata pelajaran (minimal 3 nilai) dan menghitung rata-rata nilai. Program
-akan memberikan kategori prestasi sebagai berikut:
-
-"Sangat Baik" jika rata-rata nilai lebih dari 85.
-
-"Baik" jika rata-rata nilai antara 70 dan 85.
-
-"Cukup" jika rata-rata nilai antara 50 dan 70.
-
-"Perlu Peningkatan" jika rata-rata nilai kurang dari 50.*/
+ 
     int apakahLanjut = 1;
     int jumlahMataPelajaran;
     int totalNilai;
