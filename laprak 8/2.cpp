@@ -1,47 +1,83 @@
 #include <iostream>
+
 using namespace std;
 
-void cetakMatriksRekursif(int** matriks, int baris, int kolom, int barisSekarang = 0) {
-    if (barisSekarang >= baris) return;
-    for (int j = 0; j < kolom; j++) {
-        cout << matriks[barisSekarang][j] << " ";
+int** alokasiMatriks(int baris, int kolom) {
+    int** matriks = new int*[baris];
+    for (int i = 0; i < baris; i++) {
+        matriks[i] = new int[kolom];
     }
-    cout << endl;
-    cetakMatriksRekursif(matriks, baris, kolom, barisSekarang + 1);
+    return matriks;
+}
+
+void hapusMatriks(int** matriks, int baris) {
+    for (int i = 0; i < baris; i++) {
+        delete[] matriks[i];
+    }
+    delete[] matriks;
 }
 
 int main() {
-    int baris, kolom;
-    cout << "Masukkan jumlah baris dan kolom matriks: ";
-    cin >> baris >> kolom;
+    int barisA, kolomA, barisB, kolomB;
 
-    int** matriks = new int*[baris];
-    for (int i = 0; i < baris; i++) matriks[i] = new int[kolom];
+    cout << "=== PROGRAM PERKALIAN MATRIKS DINAMIS ===" << endl;
+    
+    cout << "Masukkan jumlah baris Matriks A: ";
+    cin >> barisA;
+    cout << "Masukkan jumlah kolom Matriks A: ";
+    cin >> kolomA;
 
-    int** transpose = new int*[kolom];
-    for (int i = 0; i < kolom; i++) transpose[i] = new int[baris];
+    cout << "Masukkan jumlah baris Matriks B: ";
+    cin >> barisB;
+    cout << "Masukkan jumlah kolom Matriks B: ";
+    cin >> kolomB;
 
-    cout << "Masukkan elemen matriks:\n";
-    for (int i = 0; i < baris; i++) {
-        for (int j = 0; j < kolom; j++) cin >> matriks[i][j];
+    if (kolomA != barisB) {
+        cout << "\n[ERROR] Matriks tidak dapat dikalikan!" << endl;
+        cout << "Syarat: Jumlah kolom Matriks A harus sama dengan jumlah baris Matriks B." << endl;
+        return 1; 
     }
 
-    for (int i = 0; i < baris; i++) {
-        for (int j = 0; j < kolom; j++) {
-            transpose[j][i] = matriks[i][j];
+    int** matriksA = alokasiMatriks(barisA, kolomA);
+    int** matriksB = alokasiMatriks(barisB, kolomB);
+    int** matriksC = alokasiMatriks(barisA, kolomB);
+
+    cout << "\nMasukkan elemen Matriks A (" << barisA << "x" << kolomA << "):" << endl;
+    for (int i = 0; i < barisA; i++) {
+        for (int j = 0; j < kolomA; j++) {
+            cout << "Matriks A[" << i << "][" << j << "]: ";
+            cin >> matriksA[i][j];
         }
     }
 
-    cout << "\nMatriks asli:\n";
-    cetakMatriksRekursif(matriks, baris, kolom);
+    cout << "\nMasukkan elemen Matriks B (" << barisB << "x" << kolomB << "):" << endl;
+    for (int i = 0; i < barisB; i++) {
+        for (int j = 0; j < kolomB; j++) {
+            cout << "Matriks B[" << i << "][" << j << "]: ";
+            cin >> matriksB[i][j];
+        }
+    }
 
-    cout << "\nMatriks transpose:\n";
-    cetakMatriksRekursif(transpose, kolom, baris);
+    for (int i = 0; i < barisA; i++) {
+        for (int j = 0; j < kolomB; j++) {
+            *(*(matriksC + i) + j) = 0; 
+            for (int k = 0; k < kolomA; k++) {
+                *(*(matriksC + i) + j) += (*(*(matriksA + i) + k)) * (*(*(matriksB + k) + j));
+            }
+        }
+    }
 
-    for (int i = 0; i < baris; i++) delete[] matriks[i];
-    delete[] matriks;
-    for (int i = 0; i < kolom; i++) delete[] transpose[i];
-    delete[] transpose;
+    cout << "\nHasil perkalian Matriks A dan B:" << endl;
+    for (int i = 0; i < barisA; i++) {
+        for (int j = 0; j < kolomB; j++) {
+            cout << *(*(matriksC + i) + j) << " ";
+        }
+        cout << endl;
+    }
+
+    hapusMatriks(matriksA, barisA);
+    hapusMatriks(matriksB, barisB);
+    hapusMatriks(matriksC, barisA);
 
     return 0;
 }
